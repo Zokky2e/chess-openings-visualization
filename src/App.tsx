@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import { ChessOpening } from "./models/ChessOpening";
 import json from "./assets/chess_openings.json";
+import ChessBoard from "./components/ChessBoard";
 
 function App() {
 	const [chessOpenings, setChessOpenings] = useState<ChessOpening[]>([]);
@@ -52,17 +53,8 @@ function App() {
 					</ul>
 				</div>
 			</div>
-			<div className="main">
-				<div>
-					{selectedOpening &&
-						Object.entries(selectedOpening).map(
-							([key, value], i) => (
-								<div key={i}>
-									{key} : {value}
-								</div>
-							)
-						)}
-				</div>
+			<div id="main" className="main">
+				<div>{selectedOpening && <ChessBoard />}</div>
 			</div>
 		</div>
 	);
