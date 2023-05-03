@@ -1,21 +1,31 @@
-
+.container {
+	display: grid;
+	grid-template-columns: 30% 65%;
+	gap: 5%;
+	padding: 10px;
+}
 
 .list-container {
 	max-width: 400px;
 	max-height: 600px;
 	overflow-y: scroll;
 }
-.filter{
-	display: grid;
-	grid-template-rows: 10% 90%;
-}
-.filter input{
-	width: 100%;
-}
-.container {
+
+.filter {
 	display: flex;
-	justify-content: flex-start;
-	column-gap: 60px;
+	flex-direction: column;
+
+}
+.filter input {
+	width: 96%;
+	height: 60px;
+	font-size: 36px;
+	max-width: 400px;
+}
+
+ul{
+	margin: 0;
+	padding: 0;
 }
 
 li {

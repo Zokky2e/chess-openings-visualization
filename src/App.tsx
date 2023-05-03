@@ -23,7 +23,8 @@ function App() {
 		<div className="container">
 			<div className="filter">
 				<div>
-					<label htmlFor="query">Search: </label>
+					<label htmlFor="query">Search:</label>
+					<br />
 					<input
 						id="query"
 						type="text"
@@ -39,7 +40,10 @@ function App() {
 							return (
 								<li
 									key={id}
-									onClick={() => setSelectedOpening(opening)}
+									onClick={() => {
+										console.log(opening);
+										setSelectedOpening(opening);
+									}}
 								>
 									<h3>{opening.opening_name}</h3>
 								</li>
