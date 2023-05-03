@@ -1,2 +1,24 @@
 
 
+.list-container {
+	max-width: 400px;
+	max-height: 600px;
+	overflow-y: scroll;
+}
+.filter{
+	display: grid;
+	grid-template-rows: 10% 90%;
+}
+.filter input{
+	width: 100%;
+}
+.container {
+	display: flex;
+	justify-content: flex-start;
+	column-gap: 60px;
+}
+
+li {
+	list-style: none;
+	cursor: pointer;
+}
