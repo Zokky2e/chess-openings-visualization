@@ -31,4 +31,5 @@ ul{
 li {
 	list-style: none;
 	cursor: pointer;
+	border-bottom: 0.5px solid #ffffff;
 }

@@ -54,7 +54,11 @@ function App() {
 				</div>
 			</div>
 			<div id="main" className="main">
-				<div>{selectedOpening && <ChessBoard />}</div>
+				<div>
+					{selectedOpening && (
+						<ChessBoard chessOpening={selectedOpening} />
+					)}
+				</div>
 			</div>
 		</div>
 	);
