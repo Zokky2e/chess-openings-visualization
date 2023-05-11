@@ -33,3 +33,6 @@ li {
 	cursor: pointer;
 	border-bottom: 0.5px solid #ffffff;
 }
+svg {
+	display: block;
+}
