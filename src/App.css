@@ -1,6 +1,6 @@
 .container {
 	display: grid;
-	grid-template-columns: 30% 65%;
+	grid-template-columns: 20% 75%;
 	gap: 5%;
 	padding: 10px;
 }
@@ -34,5 +34,6 @@ li {
 	border-bottom: 0.5px solid #ffffff;
 }
 svg {
-	display: block;
+	display: inline;
+	margin: 0;
 }

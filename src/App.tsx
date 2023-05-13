@@ -4,6 +4,8 @@ import "./App.css";
 import { ChessOpening } from "./models/ChessOpening";
 import json from "./assets/chess_openings.json";
 import ChessBoard from "./components/ChessBoard";
+import PieChart from "./components/PieChart";
+import BarGraph from "./components/BarGraph";
 
 function App() {
 	const [chessOpenings, setChessOpenings] = useState<ChessOpening[]>([]);
@@ -57,6 +59,14 @@ function App() {
 				<div>
 					{selectedOpening && (
 						<ChessBoard chessOpening={selectedOpening} />
+					)}
+				</div>
+				<div>
+					{selectedOpening && (
+						<div className="graphs">
+							<PieChart chessOpening={selectedOpening} />
+							{/* <BarGraph chessOpening={selectedOpening} /> */}
+						</div>
 					)}
 				</div>
 			</div>
