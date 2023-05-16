@@ -10,7 +10,9 @@ import BarGraph from "./components/BarGraph";
 function App() {
 	const [chessOpenings, setChessOpenings] = useState<ChessOpening[]>([]);
 	const [query, setQuery] = useState<string>("");
-	const [selectedOpening, setSelectedOpening] = useState<ChessOpening>();
+	const [selectedOpenings, setSelectedOpenings] = useState<ChessOpening[]>(
+		[]
+	);
 	useEffect(() => {
 		getJSON();
 	}, [query]);
@@ -21,9 +23,19 @@ function App() {
 		);
 		setChessOpenings(filteredChessOpenings);
 	}
-
+	function checkIfSelected(name: string) {
+		return selectedOpenings.some(
+			(opening) => opening.opening_name === name
+		);
+	}
 	return (
-		<div className="container">
+		<div
+			className={
+				selectedOpenings.length !== 0
+					? "container"
+					: "container-no-content"
+			}
+		>
 			<div className="filter">
 				<div>
 					<label htmlFor="query">Search:</label>
@@ -36,6 +48,13 @@ function App() {
 							setQuery(e.target.value);
 						}}
 					/>
+					<button
+						onClick={() => {
+							setSelectedOpenings([]);
+						}}
+					>
+						Reset
+					</button>
 				</div>
 				<div className="list-container">
 					<ul>
@@ -44,32 +63,70 @@ function App() {
 								<li
 									key={id}
 									onClick={() => {
-										console.log(opening);
-										setSelectedOpening(opening);
+										const indexOfElement =
+											selectedOpenings.findIndex(
+												(selectedOpening) =>
+													opening.opening_name ===
+													selectedOpening.opening_name
+											);
+										if (indexOfElement === -1) {
+											setSelectedOpenings((prevState) => [
+												...prevState,
+												opening,
+											]);
+										} else {
+											setSelectedOpenings((prevState) =>
+												prevState.filter(
+													(_, index) =>
+														index !== indexOfElement
+												)
+											);
+										}
 									}}
 								>
-									<h3>{opening.opening_name}</h3>
+									<h3
+										className={
+											checkIfSelected(
+												opening.opening_name
+											)
+												? "selected-opening"
+												: ""
+										}
+									>
+										{opening.opening_name}
+									</h3>
 								</li>
 							);
 						})}
 					</ul>
 				</div>
 			</div>
-			<div id="main" className="main">
-				<div>
-					{selectedOpening && (
-						<ChessBoard chessOpening={selectedOpening} />
-					)}
+			{selectedOpenings.length === 0 && (
+				<div className="title-card">
+					<div>
+						<h1>Welcome to</h1>
+						<h2> my chess openings clasification</h2>
+					</div>
 				</div>
-				<div>
-					{selectedOpening && (
+			)}
+			{selectedOpenings.length === 1 && (
+				<div id="main" className="main">
+					<div>
+						<ChessBoard chessOpening={selectedOpenings[0]} />
+					</div>
+					<div>
 						<div className="graphs">
-							<PieChart chessOpening={selectedOpening} />
-							{/* <BarGraph chessOpening={selectedOpening} /> */}
+							<PieChart chessOpening={selectedOpenings[0]} />
+							<BarGraph chessOpening={selectedOpenings[0]} />
 						</div>
-					)}
+					</div>
 				</div>
-			</div>
+			)}
+			{selectedOpenings.length > 1 && (
+				<div id="main" className="main">
+					<h2>In development...</h2>
+				</div>
+			)}
 		</div>
 	);
 }
