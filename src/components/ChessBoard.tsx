@@ -8,7 +8,7 @@ interface ChessBoardProps {
 }
 
 function ChessBoard(chessBoardProps: ChessBoardProps) {
-	const boardSize = 700;
+	const boardSize = 800;
 	const squareSize = boardSize / 8;
 	function drawChessBoard() {
 		d3.selectAll("svg").remove();
@@ -143,7 +143,7 @@ function ChessBoard(chessBoardProps: ChessBoardProps) {
 		parentX: number,
 		parentY: number
 	) {
-		const pawnX = parentX + 45;
+		const pawnX = parentX + 55;
 		const pawnY = parentY - 50;
 		const pawnWidth = 50;
 		const pawnHeight = 30;
