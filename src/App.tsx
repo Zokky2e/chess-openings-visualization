@@ -117,14 +117,14 @@ function App() {
 					<div>
 						<div className="graphs">
 							<PieChart chessOpening={selectedOpenings[0]} />
-							<BarGraph chessOpening={selectedOpenings[0]} />
+							<BarGraph chessOpenings={selectedOpenings} />
 						</div>
 					</div>
 				</div>
 			)}
 			{selectedOpenings.length > 1 && (
 				<div id="main" className="main">
-					<h2>In development...</h2>
+					<BarGraph chessOpenings={selectedOpenings} />
 				</div>
 			)}
 		</div>

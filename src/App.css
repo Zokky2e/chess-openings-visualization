@@ -83,6 +83,12 @@ svg {
 	grid-row: span 2;
   }
 
+.tick text {
+	font-size: 1.5em;
+	word-break: break-all;
+	overflow-wrap: break-word;
+}
+
 @media screen and (max-width: 1600px) {
 	.container {
 		grid-template-columns: 100%
