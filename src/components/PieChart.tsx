@@ -39,8 +39,16 @@ function PieChart(chessBoardProps: ChessBoardProps) {
 			.append("svg")
 			.attr("id", "pie-chart")
 			.attr("width", chartSize)
-			.attr("height", chartSize);
-
+			.attr("height", chartSize + 40);
+		svg.append("g")
+			.attr("class", "yaxis")
+			.append("text")
+			.attr("y", 30)
+			.attr("x", chartSize / 2)
+			.style("font-size", "32px")
+			.style("text-anchor", "middle")
+			.style("fill", "white")
+			.text("Percent of win");
 		const pie = d3.pie<WinRate>().value((d) => d.percent);
 		const arc = d3
 			.arc<d3.PieArcDatum<WinRate>>()
@@ -52,7 +60,7 @@ function PieChart(chessBoardProps: ChessBoardProps) {
 			.data(arcs)
 			.enter()
 			.append("g")
-			.attr("transform", "translate(" + 200 + "," + 200 + ")");
+			.attr("transform", "translate(" + 200 + "," + 240 + ")");
 
 		pieArcs
 			.append("path")

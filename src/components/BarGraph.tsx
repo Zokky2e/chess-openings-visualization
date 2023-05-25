@@ -54,13 +54,13 @@ function BarGraph(chessBoardProps: ChessBoardProps) {
 			: (data.length - 1) * 200;
 		const defaultSize = 400 + additionalSize;
 		const margin = {
-			top: 20,
+			top: 60,
 			bottom: bigSelect ? 200 : 100,
-			left: 70,
+			left: 40,
 			right: 20,
 		};
 		const width = defaultSize - margin.left - margin.right;
-		const height = bigSelect ? 600 : 400 - margin.top - margin.bottom;
+		const height = bigSelect ? 640 : 440 - margin.top - margin.bottom;
 		const barPadding = 2;
 		const barWidth = width / data.length - barPadding;
 
@@ -103,18 +103,19 @@ function BarGraph(chessBoardProps: ChessBoardProps) {
 			.attr("class", "yaxis")
 			.call(yAxis)
 			.append("text")
-			.attr("transform", "rotate(-90)")
-			.attr("y", 6)
-			.attr("dy", ".71em")
-			.style("text-anchor", "end")
-			.text("Percentage of win");
+			.attr("y", -30)
+			.attr("x", width / 2)
+			.style("font-size", "32px")
+			.style("text-anchor", "middle")
+			.style("fill", "white")
+			.text("Number of games");
 
 		svg.append("g")
 			.attr("class", "xaxis")
 			.attr("transform", `translate(0,${height})`)
 			.call(xAxis)
 			.selectAll("text")
-			.attr("max-width", "50px")
+			.style("font-size", data.length === 1 ? "24px" : "16px")
 			.style("text-anchor", "middle")
 			.attr("transform", () => {
 				return data.length > 5
@@ -131,6 +132,8 @@ function BarGraph(chessBoardProps: ChessBoardProps) {
 			.selectAll(".barChartRectBlack")
 			.data(data)
 			.enter()
+			.append("g");
+		barchartBlack
 			.append("rect")
 			.attr("x", function (d) {
 				return xScale(getSubString(d.opening_name));
@@ -145,10 +148,34 @@ function BarGraph(chessBoardProps: ChessBoardProps) {
 			.attr("fill", function (d) {
 				return colors("black");
 			});
+		barchartBlack
+			.append("text")
+			.attr("x", function (d) {
+				return xScale(getSubString(d.opening_name));
+			})
+			.attr("y", function (d) {
+				return yScale(d.black_wins);
+			})
+			.attr("text-anchor", "middle")
+			.attr(
+				"transform",
+				"translate(" +
+					(barWidth / 3 / 2 - barPadding * 2) +
+					"," +
+					-10 +
+					")"
+			)
+			.style("fill", "white")
+			.text(function (d) {
+				return d.black_wins.toFixed(0);
+			});
+
 		const barchartWhite = svg
 			.selectAll(".barChartRectWhite")
 			.data(data)
 			.enter()
+			.append("g");
+		barchartWhite
 			.append("rect")
 			.attr("x", function (d) {
 				const position = xScale(getSubString(d.opening_name));
@@ -165,10 +192,27 @@ function BarGraph(chessBoardProps: ChessBoardProps) {
 			.attr("fill", function (d) {
 				return colors("white");
 			});
+		barchartWhite
+			.append("text")
+			.attr("x", function (d) {
+				return xScale(getSubString(d.opening_name));
+			})
+			.attr("y", function (d) {
+				return yScale(d.white_wins);
+			})
+			.attr("text-anchor", "middle")
+			.attr("transform", "translate(" + barWidth / 2 + "," + -10 + ")")
+			.style("fill", "white")
+			.text(function (d) {
+				return d.white_wins.toFixed(0);
+			});
+
 		const barchartTie = svg
 			.selectAll(".barChartRectTie")
 			.data(data)
 			.enter()
+			.append("g");
+		barchartTie
 			.append("rect")
 			.attr("x", function (d) {
 				const position = xScale(getSubString(d.opening_name));
@@ -176,7 +220,6 @@ function BarGraph(chessBoardProps: ChessBoardProps) {
 				else return (barWidth / 3) * 2;
 			})
 			.attr("y", function (d) {
-				console.log(d.tied);
 				return yScale(d.tied);
 			})
 			.attr("height", function (d) {
@@ -185,6 +228,23 @@ function BarGraph(chessBoardProps: ChessBoardProps) {
 			.attr("width", barWidth / 3)
 			.attr("fill", function (d) {
 				return colors("grey");
+			});
+		barchartTie
+			.append("text")
+			.attr("x", function (d) {
+				return xScale(getSubString(d.opening_name));
+			})
+			.attr("y", function (d) {
+				return yScale(d.tied);
+			})
+			.attr("text-anchor", "middle")
+			.style("fill", "white")
+			.attr(
+				"transform",
+				"translate(" + (barWidth - barWidth / 3 / 2) + "," + -10 + ")"
+			)
+			.text(function (d) {
+				return d.tied.toFixed(0);
 			});
 	}
 
