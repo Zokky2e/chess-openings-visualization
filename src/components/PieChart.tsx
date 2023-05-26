@@ -12,7 +12,7 @@ interface WinRate {
 function PieChart(chessBoardProps: ChessBoardProps) {
 	const chartSize = 400;
 	const [winRates, setWinRates] = useState<WinRate[]>([]);
-	const colors = ["white", "black", "gray"];
+	const colors = ["#FFFDD0", "#000040", "#C0C0C0"];
 	useEffect(() => {
 		const tiePercent =
 			chessBoardProps.chessOpening.perc_white_win +
@@ -83,7 +83,7 @@ function PieChart(chessBoardProps: ChessBoardProps) {
 			})
 			.attr("text-anchor", "middle")
 			.attr("fill", (_, i) => {
-				return colors[i] === "black" ? "white" : "black";
+				return colors[i] === "#000040" ? "white" : "black";
 			})
 			.text((d) => {
 				return d.data.person + "(" + d.data.percent.toFixed(2) + "%)";

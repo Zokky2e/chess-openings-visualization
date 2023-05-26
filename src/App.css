@@ -1,6 +1,6 @@
 .container {
-	display: grid;
-	grid-template-columns: 20% 75%;
+	display: flex;
+	justify-content: center;
 	gap: 5%;
 	padding: 10px;
 }
@@ -35,6 +35,7 @@ h3 {
 .filter {
 	display: flex;
 	flex-direction: column;
+	max-width: 400px;
 	gap: 10px;
 }
 
@@ -55,7 +56,9 @@ h3 {
 	padding: 0;
 	font-size: 32px;
 }
-
+.container-no-content .filter {
+	max-width: 100% !important;
+}
 ul{
 	margin: 0;
 	padding: 0;
@@ -89,6 +92,11 @@ svg {
 	overflow-wrap: break-word;
 }
 
+@media screen and (max-width: 1100px) {
+	.container {
+		flex-direction: column;
+	}
+}
 @media screen and (max-width: 1600px) {
 	.container {
 		grid-template-columns: 100%

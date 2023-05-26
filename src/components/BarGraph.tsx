@@ -55,7 +55,7 @@ function BarGraph(chessBoardProps: ChessBoardProps) {
 		const defaultSize = 400 + additionalSize;
 		const margin = {
 			top: 60,
-			bottom: bigSelect ? 200 : 100,
+			bottom: bigSelect ? 200 : 120,
 			left: 40,
 			right: 20,
 		};
@@ -114,19 +114,34 @@ function BarGraph(chessBoardProps: ChessBoardProps) {
 			.attr("class", "xaxis")
 			.attr("transform", `translate(0,${height})`)
 			.call(xAxis)
+			.selectAll(".tick")
 			.selectAll("text")
 			.style("font-size", data.length === 1 ? "24px" : "16px")
 			.style("text-anchor", "middle")
 			.attr("transform", () => {
 				return data.length > 5
 					? `translate(0, ${60}) rotate(-45)`
-					: `translate(0, ${40}) rotate(-15)`;
+					: `translate(0, ${20})`;
+			})
+			.text("");
+
+		svg.selectAll(".xaxis .tick text")
+			.selectAll("tspan")
+			.data(function (d) {
+				return d.split(",");
+			})
+			.enter()
+			.append("tspan")
+			.attr("x", 0)
+			.attr("dy", "1em")
+			.text(function (d) {
+				return d;
 			});
 
 		const colors = d3
 			.scaleOrdinal()
 			.domain(["Black", "White", "Tied"])
-			.range(["black", "white", "grey"]);
+			.range(["#000040", "#FFFDD0", "#C0C0C0"]);
 
 		const barchartBlack = svg
 			.selectAll(".barChartRectBlack")
