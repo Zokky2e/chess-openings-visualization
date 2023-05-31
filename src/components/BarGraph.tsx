@@ -61,7 +61,7 @@ function BarGraph(chessBoardProps: ChessBoardProps) {
 		};
 		const width = defaultSize - margin.left - margin.right;
 		const height = bigSelect ? 640 : 440 - margin.top - margin.bottom;
-		const barPadding = 2;
+		const barPadding = 10;
 		const barWidth = width / data.length - barPadding;
 
 		const xScale = d3
@@ -148,41 +148,45 @@ function BarGraph(chessBoardProps: ChessBoardProps) {
 			.data(data)
 			.enter()
 			.append("g");
+
 		barchartBlack
 			.append("rect")
 			.attr("x", function (d) {
 				return xScale(getSubString(d.opening_name));
 			})
+			.attr("y", height)
+			.attr("height", 0)
+			.attr("width", barWidth / 3)
+			.attr("fill", function (d) {
+				return colors("black");
+			})
+			.transition()
+			.duration(1000)
 			.attr("y", function (d) {
 				return yScale(d.black_wins);
 			})
 			.attr("height", function (d) {
 				return height - yScale(d.black_wins);
-			})
-			.attr("width", barWidth / 3)
-			.attr("fill", function (d) {
-				return colors("black");
 			});
 		barchartBlack
 			.append("text")
 			.attr("x", function (d) {
 				return xScale(getSubString(d.opening_name));
 			})
-			.attr("y", function (d) {
-				return yScale(d.black_wins);
-			})
+			.attr("y", height)
 			.attr("text-anchor", "middle")
 			.attr(
 				"transform",
-				"translate(" +
-					(barWidth / 3 / 2 - barPadding * 2) +
-					"," +
-					-10 +
-					")"
+				"translate(" + barWidth / 3 / 2 + "," + -10 + ")"
 			)
 			.style("fill", "white")
 			.text(function (d) {
 				return d.black_wins.toFixed(0);
+			})
+			.transition()
+			.duration(1000)
+			.attr("y", function (d) {
+				return yScale(d.black_wins);
 			});
 
 		const barchartWhite = svg
@@ -197,29 +201,36 @@ function BarGraph(chessBoardProps: ChessBoardProps) {
 				if (position) return position + barWidth / 3;
 				else return barWidth / 3;
 			})
+			.attr("y", height)
+			.attr("height", 0)
+			.attr("width", barWidth / 3)
+			.attr("fill", function (d) {
+				return colors("white");
+			})
+			.transition()
+			.duration(1000)
 			.attr("y", function (d) {
 				return yScale(d.white_wins);
 			})
 			.attr("height", function (d) {
 				return height - yScale(d.white_wins);
-			})
-			.attr("width", barWidth / 3)
-			.attr("fill", function (d) {
-				return colors("white");
 			});
 		barchartWhite
 			.append("text")
 			.attr("x", function (d) {
 				return xScale(getSubString(d.opening_name));
 			})
-			.attr("y", function (d) {
-				return yScale(d.white_wins);
-			})
+			.attr("y", height)
 			.attr("text-anchor", "middle")
 			.attr("transform", "translate(" + barWidth / 2 + "," + -10 + ")")
 			.style("fill", "white")
 			.text(function (d) {
 				return d.white_wins.toFixed(0);
+			})
+			.transition()
+			.duration(1000)
+			.attr("y", function (d) {
+				return yScale(d.white_wins);
 			});
 
 		const barchartTie = svg
@@ -234,24 +245,26 @@ function BarGraph(chessBoardProps: ChessBoardProps) {
 				if (position) return position + (barWidth / 3) * 2;
 				else return (barWidth / 3) * 2;
 			})
+			.attr("y", height)
+			.attr("height", 0)
+			.attr("width", barWidth / 3)
+			.attr("fill", function (d) {
+				return colors("grey");
+			})
+			.transition()
+			.duration(1000)
 			.attr("y", function (d) {
 				return yScale(d.tied);
 			})
 			.attr("height", function (d) {
 				return height - yScale(d.tied);
-			})
-			.attr("width", barWidth / 3)
-			.attr("fill", function (d) {
-				return colors("grey");
 			});
 		barchartTie
 			.append("text")
 			.attr("x", function (d) {
 				return xScale(getSubString(d.opening_name));
 			})
-			.attr("y", function (d) {
-				return yScale(d.tied);
-			})
+			.attr("y", height)
 			.attr("text-anchor", "middle")
 			.style("fill", "white")
 			.attr(
@@ -260,6 +273,11 @@ function BarGraph(chessBoardProps: ChessBoardProps) {
 			)
 			.text(function (d) {
 				return d.tied.toFixed(0);
+			})
+			.transition()
+			.duration(1000)
+			.attr("y", function (d) {
+				return yScale(d.tied);
 			});
 	}
 
