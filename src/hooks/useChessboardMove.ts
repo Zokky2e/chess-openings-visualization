@@ -47,11 +47,11 @@ function GetChessboardMove(cmp: ChessBoardMoveProps) {
 		}
 	}
 }
-	if(moves.length > 0) {
-		console.log(moves);
-		console.log(isBlack);
-		console.log(newBoardState);
-	}
+	// if(moves.length > 0) {
+	// 	console.log(moves);
+	// 	console.log(isBlack);
+	// 	console.log(newBoardState);
+	// }
 
 	return ( {boardTiles: newBoardState});
 }

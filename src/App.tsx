@@ -70,7 +70,6 @@ function App() {
 			const moves = getSanitizedMoves(selectedOpenings[0].moves_list);
 			setSelectedOpeningsMoves(moves);
 			setCurrentMove(-1);
-			console.log(moves);
 			setCurrentChessBoardState(
 				JSON.parse(JSON.stringify(startingChessBoardTiles))
 			);
