@@ -27,7 +27,7 @@ function MoveNavigation(moveNavigationProps: MoveNavigationProps) {
 	return (
 		<div className="nav-arrows">
 			<button onClick={moveLeft}>❮</button>
-			<p>{moveNavigationProps.currentMove + 1}</p>
+			<p>{moveNavigationProps.moves[moveNavigationProps.currentMove]}</p>
 			<button onClick={moveRight}>❯</button>
 		</div>
 	);
