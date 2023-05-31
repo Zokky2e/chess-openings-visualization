@@ -25,7 +25,7 @@ function App() {
 	const [currentMove, setCurrentMove] = useState<number>(-1);
 	const [currentChessBoardState, setCurrentChessBoardState] = useState<
 		ChessBoardTile[]
-	>(startingChessBoardTiles);
+	>(JSON.parse(JSON.stringify(startingChessBoardTiles)));
 	useEffect(() => {
 		getJSON();
 	}, [query]);
@@ -52,6 +52,17 @@ function App() {
 			);
 			chessOpeningsMoves.push(...sanitizedMoves);
 		});
+
+		console.log(
+			new Set([
+				...chessOpeningsMoves.filter(
+					(move) =>
+						move.length > 4 ||
+						move.includes("+") ||
+						move.includes("-")
+				),
+			])
+		);
 	}, [chessOpenings]);
 
 	useEffect(() => {
@@ -60,13 +71,16 @@ function App() {
 			setSelectedOpeningsMoves(moves);
 			setCurrentMove(-1);
 			console.log(moves);
+			setCurrentChessBoardState(
+				JSON.parse(JSON.stringify(startingChessBoardTiles))
+			);
 		}
 	}, [selectedOpenings]);
 
 	function handleChessState() {
 		if (selectedOpenings.length === 1) {
 			const currentState = GetChessboardMove({
-				currentBoardState: startingChessBoardTiles,
+				currentBoardState: currentChessBoardState,
 				moves: getSanitizedMoves(selectedOpenings[0].moves_list),
 				currentMove: currentMove,
 			});
@@ -193,7 +207,9 @@ function App() {
 			)}
 			{selectedOpenings.length > 1 && (
 				<div id="main" className="main">
-					<BarGraph chessOpenings={selectedOpenings} />
+					<div id="graphs-container">
+						<BarGraph chessOpenings={selectedOpenings} />
+					</div>
 				</div>
 			)}
 		</div>

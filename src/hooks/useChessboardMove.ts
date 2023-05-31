@@ -8,27 +8,49 @@ interface ChessBoardMoveProps {
 }
 
 function GetChessboardMove(cmp: ChessBoardMoveProps) {
-	let newBoardState: ChessBoardTile[] = cmp.currentBoardState;
-	let moves;
-	const isBlack = cmp.currentMove % 2 === 1;
+	let newBoardState: ChessBoardTile[] = JSON.parse(JSON.stringify(startingChessBoardTiles));
+	let moves: string[] = [];
+	let isBlack = false;
 	if(cmp.currentMove === -1) {
-		newBoardState = startingChessBoardTiles;
+		newBoardState = JSON.parse(JSON.stringify(startingChessBoardTiles));
 	}
 	else {
-		const currentMove: string = cmp.moves[cmp.currentMove];
-		if(currentMove.includes("x")) {
-			console.log("jebiga ovo ne radi");
+		for(let i=0; i<=cmp.currentMove;i++) {
+			isBlack = i % 2 === 1;
+			const currentMove: string = cmp.moves[i];
+		if(currentMove.includes("-")) {
+			console.log(currentMove);
 		} else {
-
 			moves = currentMove.split(/(?=[a-z])/);
 			if(moves.length === 1) {
 				moves.unshift("");
 			}
+			if(moves[0] === "")
+					moves[0] = "P";
+				if(isBlack)
+					moves[0] = moves[0].toLowerCase();
+			if(moves.length === 2) {
+				switch(moves[0].toLowerCase()) {
+					case "p": {
+						const fromTile = newBoardState.findIndex(tile => {
+							return tile.id[0] === moves[1][0] && tile.piece === moves[0]
+						})
+						const toTile = newBoardState.findIndex(tile => {
+							return tile.id === moves[1];
+						})
+						newBoardState[fromTile].piece = "";
+						newBoardState[toTile].piece = moves[0];
+						break;
+					}
+				}
+			}
 		}
 	}
-	if(moves) {
+}
+	if(moves.length > 0) {
 		console.log(moves);
 		console.log(isBlack);
+		console.log(newBoardState);
 	}
 
 	return ( {boardTiles: newBoardState});
