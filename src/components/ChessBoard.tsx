@@ -17,7 +17,7 @@ function ChessBoard(chessBoardProps: ChessBoardProps) {
 	const boardSize = 800;
 	const squareSize = boardSize / 8;
 	function drawChessBoard() {
-		d3.selectAll("svg").remove();
+		d3.selectAll("#chess-board").remove();
 		const board = d3
 			.select("#chessboard-container")
 			.append("svg")
@@ -168,7 +168,7 @@ function ChessBoard(chessBoardProps: ChessBoardProps) {
 
 	useEffect(() => {
 		drawChessBoard();
-	}, []);
+	}, [chessBoardProps.chessBoardTiles]);
 	return <div></div>;
 }
 
