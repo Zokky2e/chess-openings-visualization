@@ -78,7 +78,7 @@ function BarGraph(chessBoardProps: ChessBoardProps) {
 			.range([height, 0]);
 
 		const svg = d3
-			.select("#main")
+			.select("#graphs-container")
 			.append("svg")
 			.attr("id", "bar-chart")
 			.attr("width", width + margin.left + margin.right)

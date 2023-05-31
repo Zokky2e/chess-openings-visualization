@@ -35,7 +35,7 @@ function PieChart(chessBoardProps: ChessBoardProps) {
 	function createPieChart() {
 		d3.select("#pie-chart").remove();
 		const svg = d3
-			.select("#main")
+			.select("#graphs-container")
 			.append("svg")
 			.attr("id", "pie-chart")
 			.attr("width", chartSize)

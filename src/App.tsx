@@ -6,6 +6,12 @@ import json from "./assets/chess_openings.json";
 import ChessBoard from "./components/ChessBoard";
 import PieChart from "./components/PieChart";
 import BarGraph from "./components/BarGraph";
+import MoveNavigation from "./components/MoveNavigation";
+import {
+	ChessBoardTile,
+	startingChessBoardTiles,
+} from "./models/StartingChessBoardTiles";
+import GetChessboardMove from "./hooks/useChessboardMove";
 
 function App() {
 	const [chessOpenings, setChessOpenings] = useState<ChessOpening[]>([]);
@@ -13,6 +19,13 @@ function App() {
 	const [selectedOpenings, setSelectedOpenings] = useState<ChessOpening[]>(
 		[]
 	);
+	const [selectedOpeningMoves, setSelectedOpeningsMoves] = useState<string[]>(
+		[]
+	);
+	const [currentMove, setCurrentMove] = useState<number>(-1);
+	const [currentChessBoardState, setCurrentChessBoardState] = useState<
+		ChessBoardTile[]
+	>(startingChessBoardTiles);
 	useEffect(() => {
 		getJSON();
 	}, [query]);
@@ -27,6 +40,48 @@ function App() {
 		return selectedOpenings.some(
 			(opening) => opening.opening_name === name
 		);
+	}
+
+	useEffect(() => {
+		const chessOpeningsMoves: string[] = [];
+		chessOpenings.forEach((opening) => {
+			const move_list = opening.moves_list.replace(/'/g, '"');
+			const moves: string[] = JSON.parse(move_list);
+			const sanitizedMoves = moves.map((move) =>
+				move.replace(/^\d+\./, "")
+			);
+			chessOpeningsMoves.push(...sanitizedMoves);
+		});
+	}, [chessOpenings]);
+
+	useEffect(() => {
+		if (selectedOpenings.length === 1) {
+			const moves = getSanitizedMoves(selectedOpenings[0].moves_list);
+			setSelectedOpeningsMoves(moves);
+			setCurrentMove(-1);
+			console.log(moves);
+		}
+	}, [selectedOpenings]);
+
+	function handleChessState() {
+		if (selectedOpenings.length === 1) {
+			const currentState = GetChessboardMove({
+				currentBoardState: startingChessBoardTiles,
+				moves: getSanitizedMoves(selectedOpenings[0].moves_list),
+				currentMove: currentMove,
+			});
+			setCurrentChessBoardState(currentState.boardTiles);
+		}
+	}
+	useEffect(() => {
+		handleChessState();
+	}, [currentMove]);
+
+	function getSanitizedMoves(opening_moves: string) {
+		const move_list = opening_moves.replace(/'/g, '"');
+		const moves: string[] = JSON.parse(move_list);
+		const sanitizedMoves = moves.map((move) => move.replace(/^\d+\./, ""));
+		return sanitizedMoves;
 	}
 	return (
 		<div
@@ -111,11 +166,25 @@ function App() {
 			)}
 			{selectedOpenings.length === 1 && (
 				<div id="main" className="main">
-					<div>
-						<ChessBoard chessOpening={selectedOpenings[0]} />
+					<div id="chessboard-container">
+						<div>
+							<ChessBoard
+								chessOpening={selectedOpenings[0]}
+								chessBoardTiles={currentChessBoardState}
+							/>
+						</div>
+					</div>
+					<div className="navigation-arrows">
+						<MoveNavigation
+							moves={selectedOpeningMoves}
+							currentMove={currentMove}
+							updateCurrentMove={(value: number) => {
+								setCurrentMove(value);
+							}}
+						/>
 					</div>
 					<div>
-						<div className="graphs">
+						<div id="graphs-container" className="graphs">
 							<PieChart chessOpening={selectedOpenings[0]} />
 							<BarGraph chessOpenings={selectedOpenings} />
 						</div>

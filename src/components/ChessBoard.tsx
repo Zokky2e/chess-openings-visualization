@@ -1,10 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as d3 from "d3";
 import { ChessOpening } from "../models/ChessOpening";
-import { startingChessBoardTiles } from "../models/StartingChessBoardTiles";
+import {
+	ChessBoardTile,
+	startingChessBoardTiles,
+} from "../models/StartingChessBoardTiles";
 import { useEffect } from "react";
+import MoveNavigation from "./MoveNavigation";
+
 interface ChessBoardProps {
 	chessOpening: ChessOpening;
+	chessBoardTiles: ChessBoardTile[];
 }
 
 function ChessBoard(chessBoardProps: ChessBoardProps) {
@@ -13,7 +19,7 @@ function ChessBoard(chessBoardProps: ChessBoardProps) {
 	function drawChessBoard() {
 		d3.selectAll("svg").remove();
 		const board = d3
-			.select("#main")
+			.select("#chessboard-container")
 			.append("svg")
 			.attr("id", "chess-board")
 			.attr("width", boardSize)
@@ -25,7 +31,7 @@ function ChessBoard(chessBoardProps: ChessBoardProps) {
 			for (let j = 0; j < 8; j++) {
 				const parentX = j * squareSize;
 				const parentY = i * squareSize;
-				let piece = startingChessBoardTiles.find(
+				let piece = chessBoardProps.chessBoardTiles.find(
 					(tile) => tile.id === `${columns[i]}${rows[j]}`
 				)?.piece;
 				const id = `${columns[i]}${rows[j]}`;

@@ -1,4 +1,9 @@
-export const startingChessBoardTiles = [
+export interface ChessBoardTile {
+	id: string;
+	piece: string;
+}
+
+export const startingChessBoardTiles: ChessBoardTile[] = [
 		{id: "a8", piece: "r"},
 		{id: "b8", piece: "n"},
 		{id: "c8", piece: "b"},
