@@ -22,9 +22,11 @@ function GetChessboardMove(cmp: ChessBoardMoveProps) {
 		for (let i = 0; i <= cmp.currentMove; i++) {
 			isBlack = i % 2 === 1;
 			const currentMove: string = cmp.moves[i];
+			currentMove.replace("+", "");
 			if (currentMove.includes("-")) {
 				console.log(currentMove);
-			} else {
+			}
+			else {
 				moves = currentMove.split(/(?=[a-z])/);
 				if (moves.length === 1) {
 					moves.unshift("P");
@@ -137,11 +139,52 @@ function GetChessboardMove(cmp: ChessBoardMoveProps) {
 							});
 							break;
 						}
+						case "b": {
+							let bishop: number;
+							if (moves[0].length >= 2) {
+								bishop = newBoardState.findIndex((tile) => {
+									const legal = 
+									(getNumericValueOfColumn(moves[1][0])+parseInt(moves[1][1],10)) % 2
+									===
+									(getNumericValueOfColumn(tile.id[0])+parseInt(tile.id[1])) % 2
+									const piece = isBlack
+											? moves[0][0].toLowerCase()
+											: moves[0][0];
+									return tile.piece === piece && tile.id[0] === moves[0][1] && legal
+								});
+							} else {
+								bishop = newBoardState.findIndex((tile) => {
+									const legal = 
+									(getNumericValueOfColumn(moves[1][0])+parseInt(moves[1][1],10)) % 2
+									===
+									(getNumericValueOfColumn(tile.id[0])+parseInt(tile.id[1])) % 2
+									const piece = isBlack
+											? moves[0][0].toLowerCase()
+											: moves[0][0];
+									return tile.piece === piece && legal
+								});
+							}
+							const toTile = newBoardState.findIndex((tile) => {
+								return tile.id === moves[1];
+							});
+							newBoardState[bishop].piece = "";
+							newBoardState[toTile].piece = moves[0][0];
+							if (isBlack) {
+								newBoardState[toTile].piece = newBoardState[toTile].piece.toLowerCase();
+							}
+							break;
+						}
 					}
 				}
 			}
 		}
 	}
+	function getNumericValueOfColumn(char: string) {
+		const charCode = char.charCodeAt(0);
+		const numericValue = charCode - "a".charCodeAt(0) + 1;
+		return numericValue;
+	}
+
 	function getFileRank(position: string) {
 		const file = position.charAt(0);
 		const rank = parseInt(position.charAt(1), 10);
