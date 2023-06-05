@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
 	ChessBoardTile,
 	startingChessBoardTiles,
@@ -21,10 +20,66 @@ function GetChessboardMove(cmp: ChessBoardMoveProps) {
 	} else {
 		for (let i = 0; i <= cmp.currentMove; i++) {
 			isBlack = i % 2 === 1;
-			const currentMove: string = cmp.moves[i];
-			currentMove.replace("+", "");
+			let currentMove: string = cmp.moves[i];
+			currentMove = currentMove.replace("+", ""); //TODO fails on forcing line
 			if (currentMove.includes("-")) {
-				console.log(currentMove);
+				let kingTile: string;
+					let rookTile: string;
+					let rookStartTile: string;
+					const rookName = isBlack ? "r" : "R"
+					const kingName = isBlack ? "k" : "K"
+					if ((currentMove.split("-").length - 1) === 2) {
+						kingTile = "c";
+						rookTile = "d";
+						rookStartTile = "a"
+						if (isBlack) {
+							kingTile = kingTile+8;
+							rookTile = rookTile+8;
+						} else {
+							kingTile = kingTile+1;
+							rookTile = rookTile+1;
+						}
+					} else {
+						kingTile = "g"
+						rookTile = "f"
+						rookStartTile = "h"
+						if (isBlack) {
+							kingTile = kingTile+8;
+							rookTile = rookTile+8;
+						} else {
+							kingTile = kingTile+1;
+							rookTile = rookTile+1;
+						}
+					}
+					const kingFromTile = newBoardState.findIndex(
+						(tile) => {
+							return (
+								tile.piece === kingName
+							);
+						}
+					);
+					const kingToTile = newBoardState.findIndex(
+						(tile) => {
+							return tile.id === kingTile;
+						}
+					);
+					newBoardState[kingFromTile].piece = "";
+					newBoardState[kingToTile].piece = kingName;
+					const rookFromTile = newBoardState.findIndex(
+						(tile) => {
+							return (
+								tile.piece === rookName &&
+								tile.id[0] === rookStartTile
+							);
+						}
+					);
+					const rookToTile = newBoardState.findIndex(
+						(tile) => {
+							return tile.id === rookTile;
+						}
+					);
+					newBoardState[rookFromTile].piece = "";
+					newBoardState[rookToTile].piece = rookName;
 			}
 			else {
 				moves = currentMove.split(/(?=[a-z])/);
@@ -174,11 +229,105 @@ function GetChessboardMove(cmp: ChessBoardMoveProps) {
 							}
 							break;
 						}
+						case "k": {
+							if (isBlack) moves[0] = moves[0].toLowerCase();
+							const fromTile = newBoardState.findIndex(
+								(tile) => {
+									return (
+										tile.piece === moves[0][0]
+									);
+								}
+							);
+							const toTile = newBoardState.findIndex(
+								(tile) => {
+									return tile.id === moves[1];
+								}
+							);
+							newBoardState[fromTile].piece = "";
+							newBoardState[toTile].piece = moves[0][0];
+							break;
+						}
+						case "q": {
+							if (isBlack) moves[0] = moves[0].toLowerCase();
+							const fromTile = newBoardState.findIndex(
+								(tile) => {
+									return (
+										tile.piece === moves[0][0]
+									);
+								}
+							);
+							const toTile = newBoardState.findIndex(
+								(tile) => {
+									return tile.id === moves[1];
+								}
+							);
+							newBoardState[fromTile].piece = "";
+							newBoardState[toTile].piece = moves[0][0];
+							break;
+						}
+						case "r": {
+							if (isBlack) moves[0] = moves[0].toLowerCase();
+							const rookTiles: number[] = [];
+							newBoardState.forEach(
+								(tile, index) => {
+									if(tile.piece === moves[0][0])
+										rookTiles.push(
+											index
+										);
+								}
+							);
+							const toTile = newBoardState.findIndex(
+								(tile) => {
+									return tile.id === moves[1];
+								}
+							);
+							console.log(rookTiles);	
+							rookTiles.forEach(rook => {
+								if(canRookMove(newBoardState[rook].id, newBoardState[toTile].id)) {
+									newBoardState[rook].piece = "";
+									newBoardState[toTile].piece = moves[0][0];
+									if (isBlack) {
+										newBoardState[toTile].piece = newBoardState[toTile].piece.toLowerCase();
+									}
+								}
+							});
+							break;
+						}
 					}
 				}
 			}
 		}
 	}
+	function canRookMove(from: string, to: string) {
+		if (from[0] === to[0]) {
+			return true;
+		}
+		if (from[1] === to[1]) {
+			const rookRow = newBoardState.filter(tiles => 
+				tiles.id.includes(to[1])
+			);
+			let rookIndex = 0;
+			let targetIndex = 0;
+			rookRow.forEach((item, index) => {
+				if(item.id === from)
+					rookIndex = index;
+				if(item.id === to) 
+					targetIndex = index;
+			})
+			let canMove = true;
+			rookRow.splice(Math.min(rookIndex, targetIndex), Math.max(rookIndex, targetIndex)).forEach((item)=>{
+				if(item.id !== from) {
+					if(item.piece !== "") {
+						canMove = false;
+					}
+				}
+			});
+			
+			return canMove;
+		}
+		return false;
+	}
+
 	function getNumericValueOfColumn(char: string) {
 		const charCode = char.charCodeAt(0);
 		const numericValue = charCode - "a".charCodeAt(0) + 1;
@@ -191,7 +340,6 @@ function GetChessboardMove(cmp: ChessBoardMoveProps) {
 		return { file, rank };
 	}
 
-	// Function to check if a knight can move from the given position to the target position
 	function canKnightMove(from: string, to: string) {
 		const fromFileRank = getFileRank(from);
 		const toFileRank = getFileRank(to);
