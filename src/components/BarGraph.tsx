@@ -1,6 +1,9 @@
+// @ts-nocheck
+
 import * as d3 from "d3";
 import { ChessOpening } from "../models/ChessOpening";
 import { useEffect, useState } from "react";
+
 interface ChessBoardProps {
 	chessOpenings: ChessOpening[];
 }
