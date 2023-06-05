@@ -32,7 +32,10 @@ function App() {
 
 	async function getJSON() {
 		const filteredChessOpenings = json.filter((cp) =>
-			cp.opening_name.toLowerCase().includes(query)
+			cp.opening_name
+				.toLowerCase()
+				.replaceAll(" ", "")
+				.includes(query.toLowerCase().replaceAll(" ", ""))
 		);
 		setChessOpenings(filteredChessOpenings);
 	}
@@ -41,29 +44,6 @@ function App() {
 			(opening) => opening.opening_name === name
 		);
 	}
-
-	useEffect(() => {
-		const chessOpeningsMoves: string[] = [];
-		chessOpenings.forEach((opening) => {
-			const move_list = opening.moves_list.replace(/'/g, '"');
-			const moves: string[] = JSON.parse(move_list);
-			const sanitizedMoves = moves.map((move) =>
-				move.replace(/^\d+\./, "")
-			);
-			chessOpeningsMoves.push(...sanitizedMoves);
-		});
-
-		console.log(
-			new Set([
-				...chessOpeningsMoves.filter(
-					(move) =>
-						move.length > 4 ||
-						move.includes("+") ||
-						move.includes("-")
-				),
-			])
-		);
-	}, [chessOpenings]);
 
 	useEffect(() => {
 		if (selectedOpenings.length === 1) {
@@ -106,23 +86,32 @@ function App() {
 		>
 			<div className="filter">
 				<div>
-					<label htmlFor="query">Search:</label>
-					<br />
-					<input
-						id="query"
-						type="text"
-						value={query}
-						onChange={(e) => {
-							setQuery(e.target.value);
-						}}
-					/>
-					<button
-						onClick={() => {
-							setSelectedOpenings([]);
-						}}
-					>
-						Reset
-					</button>
+					<div className="search-query">
+						<label htmlFor="query">Search:</label>
+						<input
+							style={{
+								width:
+									selectedOpenings.length !== 0
+										? " 200px"
+										: "",
+							}}
+							id="query"
+							type="text"
+							value={query}
+							onChange={(e) => {
+								setQuery(e.target.value);
+							}}
+						/>
+					</div>
+					{selectedOpenings.length !== 0 && (
+						<button
+							onClick={() => {
+								setSelectedOpenings([]);
+							}}
+						>
+							Reset
+						</button>
+					)}
 				</div>
 				<div className="list-container">
 					<ul>
@@ -173,7 +162,7 @@ function App() {
 				<div className="title-card">
 					<div>
 						<h1>Welcome to</h1>
-						<h2> my chess openings clasification</h2>
+						<h2>My chess openings visualisation</h2>
 					</div>
 				</div>
 			)}

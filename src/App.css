@@ -1,7 +1,7 @@
 .container {
 	display: flex;
 	justify-content: center;
-	gap: 5%;
+	gap: 3px;
 	padding: 10px;
 }
 h3 {
@@ -40,20 +40,29 @@ h3 {
 }
 
 .filter div:first-of-type {
-	display: grid;
-	grid-template-rows: 30% 70%;
-	grid-template-columns: 20% 50% 30%;
+	display: flex;
+	flex-wrap: nowrap;
+	justify-content: center;
 }
-
+.search-query {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+}
+.search-query label, input{
+	width: min-content;
+}
 .filter input {
-	grid-column: span 2;
-	width: 90%;
 	height: 60px;
 	font-size: 36px;
-	max-width: 400px;
 }
 .filter button {
-	padding: 0;
+	cursor: pointer;
+	align-self: flex-end;
+	width: fit-content;
+	padding: 8px 0;
+	height: fit-content;
 	font-size: 32px;
 }
 .container-no-content .filter {
