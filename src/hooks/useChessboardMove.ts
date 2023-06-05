@@ -86,9 +86,7 @@ function GetChessboardMove(cmp: ChessBoardMoveProps) {
 				if (moves.length === 1) {
 					moves.unshift("P");
 				}
-				console.log(moves);
 				moves = moves.filter((move) => move !== "x");
-				console.log(moves);
 				if (moves[0] === moves[0].toLowerCase()) {
 					moves[0] = "P" + moves[0];
 				}
@@ -96,8 +94,6 @@ function GetChessboardMove(cmp: ChessBoardMoveProps) {
 				if (moves.length >= 3) {
 					moves = [moves.splice(0, 2).join(""), ...moves];
 				}
-
-				console.log(moves);
 				if (moves.length === 2) {
 					switch (moves[0][0].toLowerCase()) {
 						case "p": {
@@ -105,7 +101,6 @@ function GetChessboardMove(cmp: ChessBoardMoveProps) {
 								moves[0] = moves[0] + moves[1][0];
 							}
 							if (isBlack) moves[0] = moves[0].toLowerCase();
-							console.log(moves);
 							if (moves[1][0] !== moves[0][1]) {
 								const fromTile = newBoardState.findIndex(
 									(tile) => {
@@ -281,7 +276,6 @@ function GetChessboardMove(cmp: ChessBoardMoveProps) {
 									return tile.id === moves[1];
 								}
 							);
-							console.log(rookTiles);	
 							rookTiles.forEach(rook => {
 								if(canRookMove(newBoardState[rook].id, newBoardState[toTile].id)) {
 									newBoardState[rook].piece = "";

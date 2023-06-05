@@ -173,29 +173,3 @@ function ChessBoard(chessBoardProps: ChessBoardProps) {
 }
 
 export default ChessBoard;
-
-// switch (d.parent) {
-// 	case "p": {
-// 		console.log(d.id);
-// 		drawPawn();
-// 		break;
-// 	}
-// 	case "n": {
-// 		break;
-// 	}
-// 	case "r": {
-// 		break;
-// 	}
-// 	case "b": {
-// 		break;
-// 	}
-// 	case "q": {
-// 		break;
-// 	}
-// 	case "k": {
-// 		break;
-// 	}
-// 	default: {
-// 		break;
-// 	}
-// }
