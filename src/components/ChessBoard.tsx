@@ -1,12 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as d3 from "d3";
 import { ChessOpening } from "../models/ChessOpening";
-import {
-	ChessBoardTile,
-	startingChessBoardTiles,
-} from "../models/StartingChessBoardTiles";
+import { ChessBoardTile } from "../models/StartingChessBoardTiles";
 import { useEffect } from "react";
-import MoveNavigation from "./MoveNavigation";
 
 interface ChessBoardProps {
 	chessOpening: ChessOpening;
