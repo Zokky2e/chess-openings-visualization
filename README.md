@@ -2,7 +2,7 @@
 
 ## how to run
 
-to run this project, go to hosted web page link: 
+to run this project, go to hosted web page link: https://zmacsai-chess-openings.onrender.com
 
 if you want to try out the code locally, you will need to install nodejs, npm and vite
 links for those are here:
